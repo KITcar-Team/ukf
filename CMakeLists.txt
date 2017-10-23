@@ -13,27 +13,12 @@ ENDIF()
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-register")
 
+find_package(Eigen3 REQUIRED)
+
 # Set default ExternalProject root directory
 SET_DIRECTORY_PROPERTIES(PROPERTIES EP_PREFIX .)
 
-# Add eigen3.2.8
-ExternalProject_Add(
-eigen3
-URL https://bitbucket.org/eigen/eigen/get/3.2.8.tar.gz
-TIMEOUT 30
-# Apply the LLT malloc fix patch
-PATCH_COMMAND patch -p1 -t -N < ${PROJECT_SOURCE_DIR}/patch/eigen-3.2.8-no-malloc-in-llt.patch
-# Disable install step
-INSTALL_COMMAND ""
-# Wrap download, configure and build steps in a script to log output
-LOG_DOWNLOAD ON
-LOG_CONFIGURE ON
-LOG_BUILD ON)
-
-ExternalProject_Get_Property(eigen3 source_dir)
-SET(eigen_dir ${source_dir})
-
-INCLUDE_DIRECTORIES(${eigen_dir})
+INCLUDE_DIRECTORIES(${EIGEN3_INCLUDE_DIRS})
 
 GET_DIRECTORY_PROPERTY(hasParent PARENT_DIRECTORY)
 IF(hasParent)

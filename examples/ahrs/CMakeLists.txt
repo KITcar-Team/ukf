@@ -4,7 +4,7 @@ PROJECT(ahrs)
 # Disable dynamic memory allocation in Eigen
 ADD_DEFINITIONS(-DEIGEN_NO_MALLOC -DUKF_SINGLE_PRECISION)
 
-INCLUDE_DIRECTORIES(../../include ${eigen_dir})
+INCLUDE_DIRECTORIES(../../include)
 
 cmake_policy(SET CMP0042 NEW)
 

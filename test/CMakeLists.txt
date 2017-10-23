@@ -25,7 +25,7 @@ ADD_DEFINITIONS(-DEIGEN_NO_MALLOC -DUKF_DOUBLE_PRECISION)
 ExternalProject_Get_Property(googletest source_dir)
 SET(googletest_dir ${source_dir})
 
-INCLUDE_DIRECTORIES(${googletest_dir}/include ../include ${eigen_dir})
+INCLUDE_DIRECTORIES(${googletest_dir}/include ../include)
 
 # Add test executable target
 ADD_EXECUTABLE(unittest
@@ -36,7 +36,7 @@ ADD_EXECUTABLE(unittest
     TestSquareRootCore.cpp)
 
 # Create dependency of test on googletest
-ADD_DEPENDENCIES(unittest googletest eigen3)
+ADD_DEPENDENCIES(unittest googletest)
 
 # Specify test's link libraries
 ExternalProject_Get_Property(googletest binary_dir)

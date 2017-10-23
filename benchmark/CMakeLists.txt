@@ -25,7 +25,7 @@ ADD_DEFINITIONS(-DEIGEN_NO_MALLOC -DUKF_DOUBLE_PRECISION)
 ExternalProject_Get_Property(googlebenchmark source_dir)
 SET(googlebenchmark_dir ${source_dir})
 
-INCLUDE_DIRECTORIES(${googlebenchmark_dir}/include ../include ${eigen_dir})
+INCLUDE_DIRECTORIES(${googlebenchmark_dir}/include ../include)
 
 # Add benchmark executable target
 ADD_EXECUTABLE(benchmark
@@ -36,7 +36,7 @@ ADD_EXECUTABLE(benchmark
     BenchmarkMain.cpp)
 
 # Create dependency of benchmark on googlebenchmark
-ADD_DEPENDENCIES(benchmark googlebenchmark eigen3)
+ADD_DEPENDENCIES(benchmark googlebenchmark)
 
 # Specify benchmark's link libraries
 ExternalProject_Get_Property(googlebenchmark binary_dir)
