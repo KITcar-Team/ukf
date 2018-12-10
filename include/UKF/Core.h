@@ -24,9 +24,9 @@ SOFTWARE.
 #define CORE_H
 
 #include <Eigen/Core>
-#include <Eigen/Geometry>
 #include "UKF/Types.h"
 #include "UKF/StateVector.h"
+#include "UKF/CustomEigenLLT.h"
 
 namespace UKF {
 
@@ -95,12 +95,12 @@ public:
         Add process noise covariance to the state covariance and calculate
         the LLT decomposition of the scaled covariance matrix.
         */
-        assert(((covariance * (StateVectorType::covariance_size() +
-            Parameters::Lambda<StateVectorType>)).llt().info() == Eigen::Success)
+        assert((CustomEigen::llt(covariance * (StateVectorType::covariance_size() +
+            Parameters::Lambda<StateVectorType>)).info() == Eigen::Success)
             && "Covariance matrix is not positive definite");
 
-        sigma_points = state.calculate_sigma_point_distribution(((covariance + process_noise_covariance) *
-            (StateVectorType::covariance_size() + Parameters::Lambda<StateVectorType>)).llt().matrixL());
+        sigma_points = state.calculate_sigma_point_distribution(CustomEigen::llt((covariance + process_noise_covariance) *
+            (StateVectorType::covariance_size() + Parameters::Lambda<StateVectorType>)).matrixL());
 
         /* Propagate the sigma points through the process model. */
         for(std::size_t i = 0; i < StateVectorType::num_sigma(); i++) {
@@ -283,7 +283,7 @@ public:
         Do a rank-one Cholesky update of the root covariance matrix using the
         central sigma point delta.
         */
-        Eigen::internal::llt_inplace<real_t, Eigen::Upper>::rankUpdate(
+        CustomEigen::internal::llt_inplace<real_t, Eigen::Upper>::rankUpdate(
             root_covariance, w_prime.col(0), Parameters::Sigma_WC0<StateVectorType>);
         root_covariance.transposeInPlace();
 
@@ -345,7 +345,7 @@ public:
         Do a rank-one Cholesky update of the innovation root covariance
         matrix using the central innovation delta.
         */
-        Eigen::internal::llt_inplace<real_t, Eigen::Upper>::rankUpdate(
+        CustomEigen::internal::llt_inplace<real_t, Eigen::Upper>::rankUpdate(
             innovation_root_covariance, z_prime.col(0), Parameters::Sigma_WC0<StateVectorType>);
         innovation_root_covariance.transposeInPlace();
     }
@@ -399,7 +399,7 @@ public:
         downdates.
         */
         for(std::ptrdiff_t i = 0; i < cross_correlation.cols(); i++) {
-            Eigen::internal::llt_inplace<real_t, Eigen::Lower>::rankUpdate(
+            CustomEigen::internal::llt_inplace<real_t, Eigen::Lower>::rankUpdate(
                 root_covariance, cross_correlation.col(i), real_t(-1.0));
         }
     }
@@ -527,7 +527,7 @@ public:
         Do a rank-one Cholesky update of the innovation root covariance
         matrix using the central innovation delta.
         */
-        Eigen::internal::llt_inplace<real_t, Eigen::Upper>::rankUpdate(
+        CustomEigen::internal::llt_inplace<real_t, Eigen::Upper>::rankUpdate(
             innovation_root_covariance, z_prime.col(0), Parameters::Sigma_WC0<StateVectorType>);
         innovation_root_covariance.transposeInPlace();
     }
@@ -581,7 +581,7 @@ public:
         downdates.
         */
         for(std::ptrdiff_t i = 0; i < cross_correlation.cols(); i++) {
-            Eigen::internal::llt_inplace<real_t, Eigen::Lower>::rankUpdate(
+            CustomEigen::internal::llt_inplace<real_t, Eigen::Lower>::rankUpdate(
                 root_covariance, cross_correlation.col(i), real_t(-1.0));
         }
     }
