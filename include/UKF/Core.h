@@ -333,7 +333,7 @@ public:
         augmented_z_prime.block(0, 0, z.size(), StateVectorType::num_sigma() - 1) =
             std::sqrt(Parameters::Sigma_WCI<StateVectorType>) * z_prime.rightCols(StateVectorType::num_sigma() - 1);
         augmented_z_prime.block(0, StateVectorType::num_sigma() - 1, z.size(), z.size()) =
-            z.template calculate_measurement_root_covariance(z_pred);
+            z.calculate_measurement_root_covariance(z_pred);
 
         /*
         Calculate the QR decomposition of the augmented innovation deltas.
