@@ -311,7 +311,7 @@ public:
         z_prime = z_pred.template calculate_sigma_point_deltas<StateVectorType>(measurement_sigma_points);
 
         /* Calculate innovation and innovation root covariance. */
-        innovation = z_pred.template calculate_innovation(z);
+        innovation = z_pred.calculate_innovation(z);
 
         /*
         Create an augmented matrix containing all but the centre innovation
